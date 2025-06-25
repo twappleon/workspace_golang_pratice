@@ -30,9 +30,15 @@ workspace_golang_pratice/
 ├── channel_demo/
 │   ├── go.mod
 │   └── channel_demo.go
-└── sync_demo/
+├── sync_demo/
+│   ├── go.mod
+│   └── sync_demo.go
+├── benchmark_demo/
+│   ├── go.mod
+│   └── benchmark_demo.go
+└── benchmark_tools/
     ├── go.mod
-    └── sync_demo.go
+    └── benchmark_tool.go
 ```
 
 ## 🚀 快速开始
@@ -47,7 +53,7 @@ workspace_golang_pratice/
 
 1. **克隆项目**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/twappleon/workspace_golang_pratice.git
    cd workspace_golang_pratice
    ```
 
@@ -62,6 +68,12 @@ workspace_golang_pratice/
    
    # 运行程序
    go run init_demo.go
+   ```
+
+4. **运行所有示例**
+   ```bash
+   # 使用提供的脚本运行所有演示
+   ./run_all_demos.sh
    ```
 
 ## 📚 示例说明
@@ -151,6 +163,28 @@ cd sync_demo
 go run sync_demo.go
 ```
 
+### 8. benchmark_demo - 压测演示
+**文件**: `benchmark_demo/benchmark_demo.go`
+
+演示 Go 语言中的性能压测，包括 QPS、并发、内存等测试。
+
+**运行方法**:
+```bash
+cd benchmark_demo
+go run benchmark_demo.go
+```
+
+### 9. benchmark_tools - 压测工具
+**文件**: `benchmark_tools/benchmark_tool.go`
+
+通用的 HTTP 压测工具，支持自定义参数进行性能测试。
+
+**运行方法**:
+```bash
+cd benchmark_tools
+go run benchmark_tool.go -url http://localhost:8080 -n 1000 -c 20
+```
+
 ## 🛠️ 开发环境配置
 
 ### Cursor/VS Code 配置
@@ -231,103 +265,35 @@ go install golang.org/x/lint/golint@latest
 
 欢迎提交 Issue 和 Pull Request 来改进这个项目。
 
+### 贡献流程
+
+1. Fork 本仓库
+2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交你的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开一个 Pull Request
+
+### 问题反馈
+
+如果你发现了问题或有改进建议，请通过以下方式反馈：
+
+- [提交 Issue](https://github.com/twappleon/workspace_golang_pratice/issues)
+- [创建 Pull Request](https://github.com/twappleon/workspace_golang_pratice/pulls)
+
 ## 📄 许可证
 
-本项目采用 MIT 许可证。
+本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
 
 ## 🔗 相关链接
 
+- [项目地址](https://github.com/twappleon/workspace_golang_pratice)
 - [Go 官网](https://golang.org/)
 - [Go 包管理](https://golang.org/cmd/go/)
 - [Go 工具链](https://golang.org/cmd/)
 
-## ⚡️ 压测操作方式
+## 📊 项目状态
 
-本项目提供了两种压测方式：
-
-### 1. Go 代码内置压测（benchmark_demo）
-
-- 目录：`benchmark_demo/`
-- 文件：`benchmark_demo.go`
-
-#### 运行方法
-```bash
-cd benchmark_demo
-go run benchmark_demo.go
-```
-
-#### 功能说明
-- 支持基础 QPS 压测、高并发压测、内存压测、并发连接压测
-- 运行后会输出每种压测的统计结果
-
-#### 示例输出
-```
-🚀 Go 语言压测演示
-==================
-1. 基础压测 (1000 请求，10 并发)
-=== 基础压测 压测结果 ===
-总请求数: 1000
-成功请求数: 1000
-失败请求数: 0
-总耗时: ...
-平均延迟: ...
-...
-```
-
-### 2. 通用 HTTP 压测工具（benchmark_tools）
-
-- 目录：`benchmark_tools/`
-- 文件：`benchmark_tool.go`
-
-#### 运行方法
-```bash
-cd benchmark_tools
-go run benchmark_tool.go -url http://localhost:8080 -n 1000 -c 20 -method GET
-```
-
-#### 常用参数
-- `-url`      目标 HTTP 地址
-- `-n`        总请求数（默认 1000）
-- `-c`        并发数（默认 10）
-- `-method`   HTTP 方法（GET/POST 等）
-- `-timeout`  请求超时时间（默认 30s）
-
-#### 示例输出
-```
-🚀 HTTP 压测工具
-================
-目标URL: http://localhost:8080
-总请求数: 1000
-并发数: 20
-HTTP方法: GET
-超时时间: 30s
-
-开始压测...
-=== 压测结果 ===
-总请求数: 1000
-成功请求数: 1000
-失败请求数: 0
-总耗时: ...
-平均延迟: ...
-QPS: ...
-...
-```
-
-### 3. Go 官方基准测试（go test -bench）
-
-你也可以为自己的函数编写 `*_test.go` 文件，使用 Go 官方基准测试：
-
-```go
-func BenchmarkMyFunc(b *testing.B) {
-    for i := 0; i < b.N; i++ {
-        MyFunc()
-    }
-}
-```
-
-运行：
-```bash
-go test -bench .
-```
-
---- 
+![GitHub last commit](https://img.shields.io/github/last-commit/twappleon/workspace_golang_pratice)
+![GitHub issues](https://img.shields.io/github/issues/twappleon/workspace_golang_pratice)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/twappleon/workspace_golang_pratice)
+![GitHub license](https://img.shields.io/github/license/twappleon/workspace_golang_pratice) 
