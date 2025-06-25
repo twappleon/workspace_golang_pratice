@@ -1,3 +1,3 @@
-module example.com/anonymous_var_demo
+module anonymous_var_demo
 
-go 1.21
+go 1.24.3
