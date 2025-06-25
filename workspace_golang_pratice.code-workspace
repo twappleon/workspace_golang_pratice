@@ -27,6 +27,14 @@
         {
             "name": "sync_demo",
             "path": "./sync_demo"
+        },
+        {
+            "name": "benchmark_demo",
+            "path": "./benchmark_demo"
+        },
+        {
+            "name": "benchmark_tools",
+            "path": "./benchmark_tools"
         }
     ],
     "settings": {
@@ -43,6 +51,14 @@
         "go.gotoSymbol.includeImports": true,
         "go.gotoSymbol.includeGoroot": true,
         "go.outline.showImports": true,
+        "go.outline.showVariables": true,
+        "go.outline.showFunctions": true,
+        "go.outline.showTypes": true,
+        "go.outline.showInterfaces": true,
+        "go.outline.showStructs": true,
+        "go.outline.showMethods": true,
+        "go.outline.showFields": true,
+        "go.outline.showConstants": true,
         "go.outline.showVariables": true,
         "go.outline.showFunctions": true,
         "go.outline.showTypes": true,
