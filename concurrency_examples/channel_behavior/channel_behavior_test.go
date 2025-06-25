@@ -59,7 +59,7 @@ func TestChannelClose(t *testing.T) {
 	// 接收数据
 	value1, ok1 := <-ch
 	value2, ok2 := <-ch
-	_, ok3 := <-ch // 只检查 ok 值，忽略 value3
+	_, ok3 := <-ch
 
 	if !ok1 || value1 != 10 {
 		t.Errorf("第一次接收失败: value=%d, ok=%v", value1, ok1)
@@ -82,18 +82,12 @@ func TestSelectStatement(t *testing.T) {
 	// 启动发送者
 	go func() {
 		time.Sleep(time.Millisecond * 10)
-		select {
-		case ch1 <- 1:
-		default:
-		}
+		ch1 <- 1
 	}()
 
 	go func() {
 		time.Sleep(time.Millisecond * 20)
-		select {
-		case ch2 <- 2:
-		default:
-		}
+		ch2 <- 2
 	}()
 
 	// 使用 select 接收
@@ -118,34 +112,31 @@ func TestSelectStatement(t *testing.T) {
 	}
 }
 
-// TestNonBlockingChannel 测试非阻塞 channel 操作
-func TestNonBlockingChannel(t *testing.T) {
-	ch := make(chan int, 1)
+// TestChannelRange 测试 channel range 循环
+func TestChannelRange(t *testing.T) {
+	ch := make(chan int, 3)
 
-	// 非阻塞发送
-	select {
-	case ch <- 1:
-		// 发送成功
-	default:
-		t.Error("应该能够发送到有缓冲的 channel")
+	// 发送数据
+	ch <- 1
+	ch <- 2
+	ch <- 3
+	close(ch)
+
+	// 使用 range 接收
+	values := []int{}
+	for value := range ch {
+		values = append(values, value)
 	}
 
-	// 非阻塞接收
-	select {
-	case value := <-ch:
-		if value != 1 {
-			t.Errorf("期望接收 1，实际为 %d", value)
+	expected := []int{1, 2, 3}
+	if len(values) != len(expected) {
+		t.Errorf("期望接收 %d 个值，实际接收 %d 个", len(expected), len(values))
+	}
+
+	for i, v := range values {
+		if v != expected[i] {
+			t.Errorf("索引 %d: 期望 %d，实际 %d", i, expected[i], v)
 		}
-	default:
-		t.Error("应该能够从有缓冲的 channel 接收")
-	}
-
-	// 测试空 channel 的非阻塞接收
-	select {
-	case <-ch:
-		t.Error("空 channel 不应该有数据")
-	default:
-		// 这是期望的行为
 	}
 }
 
@@ -166,15 +157,7 @@ func BenchmarkBufferedChannel(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		select {
-		case ch <- i:
-		default:
-			// 如果 channel 满了，清空一些数据
-			for len(ch) > 500 {
-				<-ch
-			}
-			ch <- i
-		}
+		ch <- i
 	}
 
 	// 清空 channel

@@ -8,37 +8,71 @@
 workspace_golang_pratice/
 ├── README.md
 ├── workspace_golang_pratice.code-workspace
+├── run_all_demos.sh
+├── run_all_tests.sh
 ├── init_demo/
 │   ├── .vscode/
 │   │   ├── launch.json
 │   │   ├── settings.json
 │   │   └── tasks.json
 │   ├── go.mod
-│   └── init_demo.go
+│   ├── init_demo.go
+│   └── init_demo_test.go
 ├── goroutine_leak_demo/
 │   ├── go.mod
 │   └── goroutine_leak_demo.go
 ├── pass_by_value_demo/
 │   ├── go.mod
-│   └── pass_by_value_demo.go
+│   ├── pass_by_value_demo.go
+│   └── pass_by_value_demo_test.go
 ├── anonymous_var_demo/
 │   ├── go.mod
-│   └── anonymous_var_demo.go
+│   ├── anonymous_var_demo.go
+│   └── anonymous_var_demo_test.go
 ├── wait_done_demo/
 │   ├── go.mod
-│   └── wait_done_demo.go
+│   ├── wait_done_demo.go
+│   └── wait_done_demo_test.go
 ├── channel_demo/
 │   ├── go.mod
-│   └── channel_demo.go
+│   ├── channel_demo.go
+│   └── channel_demo_test.go
 ├── sync_demo/
 │   ├── go.mod
-│   └── sync_demo.go
+│   ├── sync_demo.go
+│   └── sync_demo_test.go
 ├── benchmark_demo/
 │   ├── go.mod
-│   └── benchmark_demo.go
-└── benchmark_tools/
+│   ├── benchmark_demo.go
+│   └── benchmark_demo_test.go
+├── benchmark_tools/
+│   ├── go.mod
+│   └── benchmark_tool.go
+├── channel_no_close_demo/
+│   ├── go.mod
+│   ├── channel_no_close_demo.go
+│   ├── channel_no_close_demo_test.go
+│   └── README.md
+└── concurrency_examples/
     ├── go.mod
-    └── benchmark_tool.go
+    ├── README.md
+    ├── run_all_examples.sh
+    ├── channel_behavior/
+    │   ├── go.mod
+    │   ├── main.go
+    │   └── channel_behavior_test.go
+    ├── context_demo/
+    │   ├── go.mod
+    │   └── main.go
+    ├── goroutine_leak/
+    │   ├── go.mod
+    │   └── main.go
+    ├── memory_allocation/
+    │   ├── go.mod
+    │   └── main.go
+    └── race_condition/
+        ├── go.mod
+        └── main.go
 ```
 
 ## 🚀 快速开始
@@ -252,6 +286,89 @@ go install golang.org/x/tools/cmd/goimports@latest
 
 # 安装 golint
 go install golang.org/x/lint/golint@latest
+```
+
+## 🧪 测试
+
+项目包含了完整的测试套件，涵盖了所有主要功能模块。
+
+### 运行测试
+
+#### 运行所有测试
+```bash
+# 使用提供的脚本运行所有测试
+./run_all_tests.sh
+```
+
+#### 运行特定模块的测试
+```bash
+# 进入特定目录
+cd channel_demo
+
+# 运行测试
+go test -v
+
+# 运行基准测试
+go test -bench=. -benchmem
+
+# 运行测试并显示覆盖率
+go test -v -cover
+```
+
+#### 运行基准测试
+```bash
+# 运行所有基准测试
+go test -bench=. -benchmem ./...
+
+# 运行特定基准测试
+go test -bench=BenchmarkChannelSendReceive -benchmem
+```
+
+### 测试覆盖
+
+每个模块都包含以下类型的测试：
+
+- **单元测试**: 测试各个函数和方法的正确性
+- **集成测试**: 测试模块间的交互
+- **基准测试**: 测试性能表现
+- **并发测试**: 测试并发安全性
+
+### 测试文件说明
+
+| 模块 | 测试文件 | 测试内容 |
+|------|----------|----------|
+| `init_demo` | `init_demo_test.go` | init 函数执行顺序、包级变量初始化 |
+| `channel_demo` | `channel_demo_test.go` | 无缓冲/有缓冲 channel、select 语句、channel 关闭 |
+| `sync_demo` | `sync_demo_test.go` | Mutex、RWMutex、WaitGroup、Once、竞态条件 |
+| `pass_by_value_demo` | `pass_by_value_demo_test.go` | 值传递、指针传递、切片传递 |
+| `wait_done_demo` | `wait_done_demo_test.go` | WaitGroup 基本使用、并发、超时、panic 处理 |
+| `anonymous_var_demo` | `anonymous_var_demo_test.go` | 匿名变量使用、类型断言、错误处理 |
+| `benchmark_demo` | `benchmark_demo_test.go` | 数据库操作、HTTP 服务器、压测器 |
+| `channel_no_close_demo` | `channel_no_close_demo_test.go` | channel 关闭、goroutine 泄漏检测、context 取消 |
+
+### 测试最佳实践
+
+1. **测试命名**: 使用 `Test` 前缀的函数名，描述测试的具体场景
+2. **测试覆盖**: 确保测试覆盖正常路径、边界条件和错误情况
+3. **基准测试**: 为性能关键的函数提供基准测试
+4. **并发测试**: 使用 `go test -race` 检测竞态条件
+5. **测试隔离**: 每个测试应该是独立的，不依赖其他测试的状态
+
+### 测试命令示例
+
+```bash
+# 运行测试并生成覆盖率报告
+go test -v -coverprofile=coverage.out ./...
+go tool cover -html=coverage.out -o coverage.html
+
+# 运行竞态检测
+go test -race ./...
+
+# 运行测试并显示详细输出
+go test -v -count=1 ./...
+
+# 运行基准测试并保存结果
+go test -bench=. -benchmem -benchtime=5s ./... > benchmark_results.txt
 ```
 
 ## 📖 学习资源
