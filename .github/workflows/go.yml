@@ -25,10 +25,15 @@ jobs:
       run: |
         for dir in */; do
           if [ -f "$dir/go.mod" ]; then
-            echo "Building $dir"
-            cd "$dir"
-            go build -v .
-            cd ..
+            # Check if there are any .go files in this directory
+            if find "$dir" -maxdepth 1 -name "*.go" | grep -q .; then
+              echo "Building $dir"
+              cd "$dir"
+              go build -v .
+              cd ..
+            else
+              echo "Skipping $dir (has go.mod but no Go files in root)"
+            fi
           fi
         done
 
@@ -36,9 +41,14 @@ jobs:
       run: |
         for dir in */; do
           if [ -f "$dir/go.mod" ]; then
-            echo "Testing $dir"
-            cd "$dir"
-            go test -v .
-            cd ..
+            # Check if there are any .go files in this directory
+            if find "$dir" -maxdepth 1 -name "*.go" | grep -q .; then
+              echo "Testing $dir"
+              cd "$dir"
+              go test -v .
+              cd ..
+            else
+              echo "Skipping $dir (has go.mod but no Go files in root)"
+            fi
           fi
         done
