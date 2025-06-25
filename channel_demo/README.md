@@ -1,6 +1,60 @@
-# Channel基础示例
+# Channel 演示
 
-这个示例演示了Go语言中Channel的基本使用方法，包括创建、发送、接收、关闭等操作。
+这个示例演示了 Go 语言中 Channel 的使用，包括无缓冲和有缓冲 Channel 的各种用法。
+
+## 📝 代码说明
+
+### 无缓冲 Channel
+```go
+ch := make(chan int) // 无缓冲 channel
+```
+
+无缓冲 Channel 要求发送和接收必须同时准备好，否则会阻塞。
+
+### 有缓冲 Channel
+```go
+ch := make(chan int, 3) // 有缓冲 channel，容量为3
+```
+
+有缓冲 Channel 可以在缓冲区未满时发送，未空时接收。
+
+### Channel 操作
+- **发送**: `ch <- value`
+- **接收**: `value := <-ch`
+- **关闭**: `close(ch)`
+- **检查关闭**: `value, ok := <-ch`
+
+## 🚀 运行方法
+
+```bash
+# 进入目录
+cd channel_demo
+
+# 运行程序
+go run channel_demo.go
+```
+
+## 📊 运行结果
+
+程序会演示多种 Channel 使用场景，包括：
+- 基本的发送和接收
+- 生产者-消费者模式
+- Channel 的关闭和检查
+- 有缓冲和无缓冲 Channel 的区别
+
+## 💡 学习要点
+
+- Channel 是 Go 语言中实现并发通信的主要方式
+- 无缓冲 Channel 提供同步通信
+- 有缓冲 Channel 提供异步通信
+- Channel 可以用于协调多个 Goroutine
+- 关闭 Channel 后不能再发送数据
+
+## 🔗 相关概念
+
+- [Go Channel](https://golang.org/ref/spec#Channel_types)
+- [Channel 操作](https://golang.org/ref/spec#Send_statements)
+- [并发模式](https://golang.org/doc/codewalk/sharemem/)
 
 ## 📁 文件结构
 

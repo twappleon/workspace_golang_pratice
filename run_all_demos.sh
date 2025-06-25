@@ -1,8 +1,10 @@
 #!/bin/bash
 
-echo "=========================================="
-echo "Go语言学习与实践工作空间 - 运行所有示例"
-echo "=========================================="
+# Go 语言实践项目 - 运行所有演示脚本
+# 这个脚本会依次运行所有 Go 演示程序
+
+echo "🚀 开始运行所有 Go 语言演示程序..."
+echo "=================================="
 
 # 颜色定义
 RED='\033[0;31m'
@@ -11,52 +13,49 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# 获取脚本所在目录
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# 运行示例函数
+# 运行单个演示的函数
 run_demo() {
-    local dir="$SCRIPT_DIR/$1"
-    local name=$2
-    local file=$3
+    local demo_name=$1
+    local demo_dir=$2
+    local go_file=$3
     
-    echo -e "\n${BLUE}运行 $name 示例...${NC}"
-    echo "=========================================="
+    echo -e "\n${BLUE}📁 运行 $demo_name...${NC}"
+    echo "----------------------------------------"
     
-    if [ -d "$dir" ]; then
-        cd "$dir"
-        if go run "$file"; then
-            echo -e "${GREEN}✓ $name 示例运行成功${NC}"
+    if [ -d "$demo_dir" ] && [ -f "$demo_dir/$go_file" ]; then
+        cd "$demo_dir"
+        if go run "$go_file"; then
+            echo -e "${GREEN}✅ $demo_name 运行成功${NC}"
         else
-            echo -e "${RED}✗ $name 示例运行失败${NC}"
+            echo -e "${RED}❌ $demo_name 运行失败${NC}"
         fi
-        cd "$SCRIPT_DIR"
+        cd ..
     else
-        echo -e "${RED}✗ 目录 $dir 不存在${NC}"
+        echo -e "${YELLOW}⚠️  $demo_name 目录或文件不存在${NC}"
     fi
 }
 
-# 运行基础概念示例
-echo -e "\n${YELLOW}=== 基础概念示例 ===${NC}"
-run_demo "init_demo" "包初始化" "init_demo.go"
-run_demo "pass_by_value_demo" "值传递" "pass_by_value_demo.go"
-run_demo "anonymous_var_demo" "匿名变量" "anonymous_var_demo.go"
-run_demo "wait_done_demo" "Wait/Done模式" "wait_done_demo.go"
-run_demo "channel_demo" "Channel基础" "channel_demo.go"
-run_demo "sync_demo" "同步原语" "sync_demo.go"
-run_demo "goroutine_leak_demo" "Goroutine泄漏" "goroutine_leak_demo.go"
+# 检查 Go 是否安装
+if ! command -v go &> /dev/null; then
+    echo -e "${RED}❌ Go 未安装，请先安装 Go${NC}"
+    exit 1
+fi
 
-# 运行并发编程示例
-echo -e "\n${YELLOW}=== 并发编程示例 ===${NC}"
-run_demo "concurrency_examples" "并发编程" "run_all_examples.sh"
+echo -e "${GREEN}✅ Go 版本: $(go version)${NC}"
 
-echo -e "\n${GREEN}=========================================="
-echo "所有示例运行完成！"
-echo "==========================================${NC}"
+# 运行所有演示
+run_demo "Init 函数演示" "init_demo" "init_demo.go"
+run_demo "Goroutine 泄漏演示" "goroutine_leak_demo" "goroutine_leak_demo.go"
+run_demo "值传递演示" "pass_by_value_demo" "pass_by_value_demo.go"
+run_demo "匿名变量演示" "anonymous_var_demo" "anonymous_var_demo.go"
+run_demo "WaitGroup 演示" "wait_done_demo" "wait_done_demo.go"
+run_demo "Channel 演示" "channel_demo" "channel_demo.go"
+run_demo "同步原语演示" "sync_demo" "sync_demo.go"
 
-echo -e "\n${YELLOW}提示：${NC}"
-echo "1. 观察每个示例的输出，理解Go语言特性"
-echo "2. 注意并发示例中结果的不确定性"
-echo "3. 某些示例可能会产生goroutine泄漏（仅用于演示）"
-echo "4. 使用 'go run -race' 可以检测竞态条件"
-echo "5. 详细说明请查看各示例目录中的README.md文件" 
+echo -e "\n${GREEN}🎉 所有演示程序运行完成！${NC}"
+echo "=================================="
+echo -e "${BLUE}💡 提示：${NC}"
+echo "   - 使用 'go run <文件名>' 运行单个程序"
+echo "   - 使用 'go build' 构建可执行文件"
+echo "   - 使用 'go test' 运行测试"
+echo "   - 查看各目录下的 README.md 了解详细信息" 

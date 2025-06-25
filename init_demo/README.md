@@ -198,56 +198,55 @@ go build ./...
 
 如有问题或建议，请提交 [Issue](https://github.com/your-repo/issues) 或联系维护者。
 
-# 包初始化示例
+# Init 函数演示
 
-这个示例演示了Go语言中包初始化的机制，包括包级变量初始化和init函数的执行顺序。
+这个示例演示了 Go 语言中 `init()` 函数的执行顺序和包级变量初始化机制。
 
-## 📁 文件结构
-
-```
-init_demo/
-├── README.md    # 项目说明
-├── go.mod       # 模块定义
-└── init_demo.go # 主程序文件
-```
-
-## 🎯 学习目标
-
-- 理解包级变量的初始化时机
-- 掌握init函数的执行顺序
-- 了解包导入时的初始化过程
-
-## 📖 示例内容
+## 📝 代码说明
 
 ### 包级变量初始化
 ```go
-// 包级变量初始化
 var msg = func() string {
     fmt.Println("变量初始化")
     return "Hello"
 }()
 ```
 
-### init函数
+这个变量在包被导入时就会执行初始化函数，输出 "变量初始化"。
+
+### Init 函数
 ```go
-// 第一个init函数
 func init() {
     fmt.Println("init函数1执行")
 }
 
-// 第二个init函数
 func init() {
     fmt.Println("init函数2执行")
 }
 ```
 
-## 🚀 运行示例
+Go 语言允许在一个包中定义多个 `init()` 函数，它们会按照定义的顺序执行。
+
+### Main 函数
+```go
+func main() {
+    fmt.Println("main函数执行:", msg)
+}
+```
+
+`main()` 函数在所有 `init()` 函数执行完毕后才会执行。
+
+## 🚀 运行方法
 
 ```bash
+# 进入目录
+cd init_demo
+
+# 运行程序
 go run init_demo.go
 ```
 
-## 📋 预期输出
+## 📊 运行结果
 
 ```
 变量初始化
@@ -256,16 +255,22 @@ init函数2执行
 main函数执行: Hello
 ```
 
-## 💡 关键概念
+## 🔍 执行顺序
 
-1. **包级变量初始化**：在包被导入时立即执行
-2. **init函数**：在main函数之前自动执行
-3. **执行顺序**：变量初始化 → init函数 → main函数
-4. **多个init函数**：按照定义顺序执行
+1. **包级变量初始化** - 首先执行包级变量的初始化
+2. **Init 函数执行** - 按照定义顺序执行所有 `init()` 函数
+3. **Main 函数执行** - 最后执行 `main()` 函数
 
-## 🔍 学习要点
+## 💡 学习要点
 
-- 包级变量的初始化函数会在包导入时立即执行
-- init函数可以有多个，按照定义顺序执行
-- init函数不能有参数和返回值
-- 包初始化只执行一次，即使多次导入 
+- `init()` 函数在包被导入时自动执行
+- 一个包可以有多个 `init()` 函数
+- `init()` 函数不能手动调用
+- 包级变量在 `init()` 函数之前初始化
+- `main()` 函数在所有 `init()` 函数之后执行
+
+## 🔗 相关概念
+
+- [Go 包初始化](https://golang.org/ref/spec#Package_initialization)
+- [Init 函数](https://golang.org/doc/effective_go.html#init)
+- [包级变量](https://golang.org/ref/spec#Variable_declarations) 
