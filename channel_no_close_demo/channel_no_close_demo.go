@@ -181,7 +181,8 @@ func goroutineLeakDetection() {
 	}
 }
 
-func main() {
+func main() {]
+	
 	fmt.Println("🚀 Channel 不关闭的问题演示")
 	fmt.Println("==========================")
 
