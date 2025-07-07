@@ -20,9 +20,15 @@ func GetInstance(num int) *Singleton {
 	return singleton
 }
 
+func (s *Singleton) DoSomething() {
+	fmt.Println("Doing something")
+}
+
 func main() {
 	instance := GetInstance(1)
-	fmt.Println(instance)
+	fmt.Println(&instance)
+	instance.DoSomething()
 	instance2 := GetInstance(2)
-	fmt.Println(instance2)
+	fmt.Println(&instance2)
+	instance2.DoSomething()
 }
